@@ -1,6 +1,7 @@
 package pageObjects;
 
 import enums.MainMenu;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,6 +19,8 @@ public class BtlBasePage extends BasePage {
 
     @FindBy(className = "snifim")
     private WebElement branchesButton;
+
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
     public BtlBasePage(WebDriver driver) {
         super(driver);
@@ -41,6 +44,25 @@ public class BtlBasePage extends BasePage {
         searchField.clear();
         searchField.sendKeys(searchText);
         searchIcon.click();
+    }
+
+    public void clickOnBranchesButton() {
+        String searchQuery = "חישוב סכום דמי לידה ליום";
+        HomePage homePage = new HomePage(driver);
+        homePage.search(searchQuery);
+
+        WebElement title = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("div#results h2")
+        ));
+        title.getText().contains("תוצאות חיפוש עבור " + searchQuery);
+
+    }
+
+    public void clickOnBranch() {
+        WebElement firstBranch = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector(".OP_List li div .snif-rashi a")
+        ));
+        firstBranch.click();
     }
 
     public BranchesAndServicesPage clickBranchesButton() {
